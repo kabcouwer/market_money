@@ -12,6 +12,16 @@ gem "pg", "~> 1.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
+# Addadd serializer gem
+gem 'jsonapi-serializer'
+
+# Binding.pry
+gem 'pry'
+
+# Rubocop
+gem 'rubocop'
+gem 'rubocop-rails'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
@@ -47,3 +57,10 @@ group :development do
   # gem "spring"
 end
 
+group :test do
+  gem 'simplecov', require: false
+  gem 'faker'
+  gem 'factory_bot_rails'
+  gem 'shoulda-matchers'
+  gem 'database_cleaner'
+end
