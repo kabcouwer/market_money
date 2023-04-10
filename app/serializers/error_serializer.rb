@@ -7,9 +7,9 @@ class ErrorSerializer
     {
       errors: [
         {
-          status:  @error_object.status,
-          message: @error_object.message,
-          code:    @error_object.code
+          status: @error_object.status,
+          detail: @error_object.detail,
+          code:   @error_object.code
         }
       ]
     }

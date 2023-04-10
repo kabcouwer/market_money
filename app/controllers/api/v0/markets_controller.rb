@@ -11,7 +11,7 @@ module Api
         if @market.instance_of?(Market)
           render json: MarketSerializer.new(@market)
         else
-          render json: ErrorSerializer.new(@market).serialized_json
+          render json: ErrorSerializer.new(@market).serialized_json, status: :not_found
         end
       end
     end

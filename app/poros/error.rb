@@ -1,8 +1,8 @@
 class Error
-  attr_reader :message, :status, :code
+  attr_reader :detail, :status, :code
 
-  def initialize(message, status, code)
-    @message = message
+  def initialize(detail, status, code)
+    @detail = detail
     @status = status
     @code = code
   end
