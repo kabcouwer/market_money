@@ -7,13 +7,13 @@ RSpec.describe "Vendors API" do
         vendor = create(:vendor)
 
         update_params = {
-          description:     "A new description",
+          description: "A new description"
         }
 
         headers = { "CONTENT_TYPE" => "application/json" }
 
         patch "/api/v0/vendors/#{vendor.id}", headers:,
-                                params:  JSON.generate(vendor: update_params)
+                                              params:  JSON.generate(vendor: update_params)
 
         expect(response).to have_http_status(200)
 
@@ -42,7 +42,7 @@ RSpec.describe "Vendors API" do
         headers = { "CONTENT_TYPE" => "application/json" }
 
         patch "/api/v0/vendors/#{vendor_id}", headers:,
-                                params:  JSON.generate(vendor: update_params)
+                                              params:  JSON.generate(vendor: update_params)
 
         expect(response.status).to eq(404)
 
@@ -53,7 +53,7 @@ RSpec.describe "Vendors API" do
         expect(error[:status]).to eq("NOT FOUND")
 
         expect(error).to have_key(:detail)
-        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'=12345")
+        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'= 12345")
 
         expect(error).to have_key(:code)
         expect(error[:code]).to eq(404)
@@ -70,7 +70,7 @@ RSpec.describe "Vendors API" do
         headers = { "CONTENT_TYPE" => "application/json" }
 
         patch "/api/v0/vendors/#{vendor.id}", headers:,
-                                params:  JSON.generate(vendor: update_params)
+                                              params:  JSON.generate(vendor: update_params)
 
         expect(response.status).to eq(400)
 

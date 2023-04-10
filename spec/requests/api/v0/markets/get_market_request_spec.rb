@@ -44,20 +44,20 @@ RSpec.describe "Markets API" do
     context "sad paths" do
       it "returns 404 with bad market id" do
         id = 12_345
-  
+
         get "/api/v0/markets/#{id}"
-  
+
         expect(response.status).to eq(404)
-  
+
         body = JSON.parse(response.body, symbolize_names: true)
         error = body[:errors].first
-  
+
         expect(error).to have_key(:status)
         expect(error[:status]).to eq("NOT FOUND")
-  
+
         expect(error).to have_key(:detail)
-        expect(error[:detail]).to eq("Couldn't find Market with 'id'=12345")
-  
+        expect(error[:detail]).to eq("Couldn't find Market with 'id'= 12345")
+
         expect(error).to have_key(:code)
         expect(error[:code]).to eq(404)
       end

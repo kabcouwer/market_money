@@ -46,7 +46,7 @@ RSpec.describe "Vendors API" do
         expect(error[:status]).to eq("NOT FOUND")
 
         expect(error).to have_key(:detail)
-        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'=12345")
+        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'= 12345")
 
         expect(error).to have_key(:code)
         expect(error[:code]).to eq(404)

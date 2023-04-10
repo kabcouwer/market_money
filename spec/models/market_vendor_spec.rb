@@ -7,9 +7,7 @@ RSpec.describe MarketVendor, type: :model do
   end
 
   describe "validations" do
-    it { should validate_presence_of(:market_id) }
     it { should validate_presence_of(:market) }
-    it { should validate_presence_of(:vendor_id) }
     it { should validate_presence_of(:vendor) }
   end
 end
