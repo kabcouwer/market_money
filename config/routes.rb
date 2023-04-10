@@ -9,7 +9,9 @@ Rails.application.routes.draw do
         resources :vendors, module: 'markets', only: [:index]
       end
 
-      resources :vendors, only: [:show, :new, :create, :update, :destroy]
+      resources :vendors, only: [:show, :new, :create, :update, :destroy] do
+        resources :markets, module: 'vendors', only: [:index]
+      end
     end
   end
 end
