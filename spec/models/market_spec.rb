@@ -23,12 +23,10 @@ RSpec.describe Market, type: :model do
     it "can count vendors" do
       market1 = create(:market)
       market2 = create(:market)
+
       vendor1 = create(:vendor)
       vendor2 = create(:vendor)
       vendor3 = create(:vendor)
-      vendor4 = create(:vendor)
-      vendor5 = create(:vendor)
-      vendor6 = create(:vendor)
 
       market_vendor1 = MarketVendor.create(market_id: market1.id, vendor_id: vendor1.id)
       market_vendor2 = MarketVendor.create(market_id: market1.id, vendor_id: vendor2.id)

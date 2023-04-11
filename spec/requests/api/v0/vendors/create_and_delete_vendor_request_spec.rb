@@ -50,7 +50,7 @@ RSpec.describe "Vendors API" do
     end
 
     context "without valid attributes" do
-      it "returns an error if any attribute is missing with new vendor post" do
+      it "returns bad request error if any attribute is missing with new vendor post" do
         vendor_params = {
           "name":            "Buzzy Bees",
           "description":     "local honey and wax products",
@@ -86,10 +86,33 @@ RSpec.describe "Vendors API" do
         expect(error[:status]).to eq("NOT FOUND")
 
         expect(error).to have_key(:detail)
-        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'= 12345")
+        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'=12345")
 
         expect(error).to have_key(:code)
         expect(error[:code]).to eq(404)
+      end
+    end
+
+    context "without valid content-type" do
+      it "returns bad request error with incorrect content type" do
+        vendor_params = {
+          name:            "New Vendor",
+          description:     "A description",
+          contact_name:    "Contact Name",
+          contact_phone:   "123.456.7890",
+          credit_accepted: false
+        }
+
+        post "/api/v0/vendors", params: JSON.generate(vendor: vendor_params)
+
+        expect(response.status).to eq(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        error = body[:errors].first
+
+        expect(error[:status]).to eq("BAD REQUEST")
+        expect(error[:detail]).to eq("Validation Failed: JSON content type required")
+        expect(error[:code]).to eq(400)
       end
     end
   end

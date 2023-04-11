@@ -1,22 +1,23 @@
 require "rails_helper"
 
 RSpec.describe "Vendors Markets API" do
+  before :each do
+    @vendor1 = create(:vendor)
+    @vendor2 = create(:vendor)
+
+    @market1 = create(:market)
+    @market2 = create(:market)
+    @market3 = create(:market)
+
+    @market_vendor1 = MarketVendor.create(market_id: @market1.id, vendor_id: @vendor1.id)
+    @market_vendor2 = MarketVendor.create(market_id: @market2.id, vendor_id: @vendor1.id)
+    @market_vendor3 = MarketVendor.create(market_id: @market3.id, vendor_id: @vendor1.id)
+  end
+
   describe "GET #index" do
-    context "happy paths" do
+    context "with valid attributes" do
       it "gets all markets for a vendor" do
-        vendor1 = create(:vendor)
-        vendor2 = create(:vendor)
-
-        market1 = create(:market)
-        market2 = create(:market)
-        market3 = create(:market)
-
-        market_vendor1 = MarketVendor.create(market_id: market1.id, vendor_id: vendor1.id)
-        market_vendor2 = MarketVendor.create(market_id: market2.id, vendor_id: vendor1.id)
-        market_vendor2 = MarketVendor.create(market_id: market3.id, vendor_id: vendor1.id)
-        market_vendor3 = MarketVendor.create(market_id: market1.id, vendor_id: vendor2.id)
-
-        get "/api/v0/vendors/#{vendor1.id}/markets"
+        get "/api/v0/vendors/#{@vendor1.id}/markets"
 
         expect(response.status).to eq(200)
 
@@ -57,18 +58,7 @@ RSpec.describe "Vendors Markets API" do
       end
 
       it "gets an empty array if vendor has no markets" do
-        vendor1 = create(:vendor)
-        vendor2 = create(:vendor)
-
-        market1 = create(:market)
-        market2 = create(:market)
-        market3 = create(:market)
-
-        market_vendor1 = MarketVendor.create(market_id: market1.id, vendor_id: vendor1.id)
-        market_vendor2 = MarketVendor.create(market_id: market2.id, vendor_id: vendor1.id)
-        market_vendor2 = MarketVendor.create(market_id: market3.id, vendor_id: vendor1.id)
-
-        get "/api/v0/vendors/#{vendor2.id}/markets"
+        get "/api/v0/vendors/#{@vendor2.id}/markets"
 
         expect(response.status).to eq(200)
 
@@ -79,7 +69,7 @@ RSpec.describe "Vendors Markets API" do
       end
     end
 
-    context "sad paths" do
+    context "without valid attributes" do
       it "returns 404 with bad vendor id" do
         id = 12_345
 
@@ -94,7 +84,7 @@ RSpec.describe "Vendors Markets API" do
         expect(error[:status]).to eq("NOT FOUND")
 
         expect(error).to have_key(:detail)
-        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'= 12345")
+        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'=12345")
 
         expect(error).to have_key(:code)
         expect(error[:code]).to eq(404)

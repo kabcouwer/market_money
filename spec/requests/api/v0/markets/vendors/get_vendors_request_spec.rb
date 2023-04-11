@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Market Vendors API" do
   describe "GET #index" do
-    context "happy paths" do
+    context "with valid attributes" do
       it "gets all vendors for a market" do
         market1 = create(:market)
         market2 = create(:market)
@@ -50,7 +50,7 @@ RSpec.describe "Market Vendors API" do
       end
     end
 
-    context "sad paths" do
+    context "without valid attributes" do
       it "returns 404 with bad market id" do
         id = 12_345
 
@@ -65,7 +65,7 @@ RSpec.describe "Market Vendors API" do
         expect(error[:status]).to eq("NOT FOUND")
 
         expect(error).to have_key(:detail)
-        expect(error[:detail]).to eq("Couldn't find Market with 'id'= 12345")
+        expect(error[:detail]).to eq("Couldn't find Market with 'id'=12345")
 
         expect(error).to have_key(:code)
         expect(error[:code]).to eq(404)

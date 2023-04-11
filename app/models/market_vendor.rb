@@ -4,5 +4,15 @@ class MarketVendor < ApplicationRecord
 
   validates :market, presence: true
   validates :vendor, presence: true
-  # validates_uniqueness_of :market_id, :scope => :vendor_id
+  validate :uniqueness, on: :create
+
+  protected
+
+  def uniqueness
+    return unless MarketVendor.find_by(market_id:, vendor_id:)
+
+    errors.add(:base,
+               "Market vendor asociation between market with market_id=#{market_id} "\
+               "and vendor with vendor_id=#{vendor_id} already exists")
+  end
 end

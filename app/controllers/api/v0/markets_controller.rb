@@ -7,12 +7,8 @@ module Api
       end
 
       def show
-        @market = MarketFacade.find_with_id(params[:id])
-        if @market.instance_of?(Market)
-          render json: MarketSerializer.new(@market)
-        else
-          render json: ErrorSerializer.new(@market).serialized_json, status: :not_found
-        end
+        @market = Market.find(params[:id])
+        render json: MarketSerializer.new(@market)
       end
     end
   end

@@ -3,12 +3,8 @@ module Api
     module Markets
       class VendorsController < ApplicationController
         def index
-          @market = MarketFacade.find_with_id(params[:market_id])
-          if @market.instance_of?(Market)
-            render json: VendorSerializer.new(@market.vendors)
-          else
-            render json: ErrorSerializer.new(@market).serialized_json, status: :not_found
-          end
+          @market = Market.find(params[:market_id])
+          render json: VendorSerializer.new(@market.vendors)
         end
       end
     end

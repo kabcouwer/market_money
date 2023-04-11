@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Vendors API" do
   describe "PATCH #update" do
-    context "happy paths" do
+    context "with valid attributes" do
       it "updates a vendor" do
         vendor = create(:vendor)
 
@@ -29,7 +29,7 @@ RSpec.describe "Vendors API" do
       end
     end
 
-    context "sad paths" do
+    context "without valid attributes" do
       it "returns not found error if vendor does not exist" do
         vendor_id = 12_345
 
@@ -53,13 +53,13 @@ RSpec.describe "Vendors API" do
         expect(error[:status]).to eq("NOT FOUND")
 
         expect(error).to have_key(:detail)
-        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'= 12345")
+        expect(error[:detail]).to eq("Couldn't find Vendor with 'id'=12345")
 
         expect(error).to have_key(:code)
         expect(error[:code]).to eq(404)
       end
 
-      it "returns bad request if any params are blank" do
+      it "returns bad request error if any params are blank" do
         vendor = create(:vendor)
 
         update_params = {
@@ -84,6 +84,29 @@ RSpec.describe "Vendors API" do
         expect(error[:detail]).to eq("Validation Failed: Description can't be blank")
 
         expect(error).to have_key(:code)
+        expect(error[:code]).to eq(400)
+      end
+    end
+
+    context "without valid content-type" do
+      it "returns bad request error with incorrect content type" do
+        vendor = create(:vendor)
+
+        update_params = {
+          description: "A new description"
+        }
+
+        headers = { "CONTENT_TYPE" => "application/json" }
+
+        patch "/api/v0/vendors/#{vendor.id}", params: JSON.generate(vendor: update_params)
+
+        expect(response.status).to eq(400)
+
+        body = JSON.parse(response.body, symbolize_names: true)
+        error = body[:errors].first
+
+        expect(error[:status]).to eq("BAD REQUEST")
+        expect(error[:detail]).to eq("Validation Failed: JSON content type required")
         expect(error[:code]).to eq(400)
       end
     end
