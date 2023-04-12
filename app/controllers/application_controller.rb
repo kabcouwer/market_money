@@ -14,6 +14,12 @@ class ApplicationController < ActionController::API
     render json: ErrorSerializer.new(error).serialized_json, status: :bad_request
   end
 
+  def unprocessable_entity(messages)
+    detail = "Validation Failed: #{messages.join(', ')}"
+    error = Error.new(detail, "UNPROCESSABLE ENTITY", 422)
+    render json: ErrorSerializer.new(error).serialized_json, status: :unprocessable_entity
+  end
+
   private
 
   def record_not_found(exception)

@@ -36,7 +36,7 @@ RSpec.describe MarketVendor, type: :model do
       )
       market_vendor2.save
 
-      expect(market_vendor2.errors.full_messages.join(", ")).to eq("Market vendor asociation between market with market_id=#{market.id} and vendor with vendor_id=#{vendor.id} already exists")
+      expect(market_vendor2.errors.full_messages.join(", ")).to eq("Market vendor association between market with market_id=#{market.id} and vendor with vendor_id=#{vendor.id} already exists")
       expect(MarketVendor.all.count).to eq(1)
     end
   end

@@ -8,16 +8,17 @@ module Api
         @market_vendor = MarketVendor.new(market_vendor_params)
         if @market_vendor.save
           render json: { message: "Successfully added vendor to market" }, status: :created
-        else
+        elsif !@market || !@vendor
           bad_request(@market_vendor.errors.full_messages)
+        else
+          unprocessable_entity(@market_vendor.errors.full_messages)
         end
       end
 
       def destroy
         unless @market_vendor&.destroy
-          market_id = market_vendor_params[:market_id]
-          vendor_id = market_vendor_params[:vendor_id]
-          raise "No MarketVendor with market_id=#{market_id} AND vendor_id=#{vendor_id} exists"
+          raise "No MarketVendor with market_id=#{market_vendor_params[:market_id]} "\
+          "AND vendor_id=#{market_vendor_params[:vendor_id]} exists"
         end
 
         render status: :no_content
@@ -38,9 +39,9 @@ module Api
       end
 
       def find_market_vendor
-        if market_vendor_params[:market_id].present? && market_vendor_params[:vendor_id].present?
-          @market_vendor = MarketVendor.find_by(market_vendor_params)
-        end
+        return if market_vendor_params[:market_id].blank? || market_vendor_params[:vendor_id].blank?
+
+        @market_vendor = MarketVendor.find_by(market_vendor_params)
       end
 
       def market_vendor_params

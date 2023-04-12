@@ -11,8 +11,8 @@ class MarketVendor < ApplicationRecord
   def uniqueness
     return unless MarketVendor.find_by(market_id:, vendor_id:)
 
-    errors.add(:base,
-               "Market vendor asociation between market with market_id=#{market_id} "\
+    errors.add(:market_vendor,
+               "association between market with market_id=#{market_id} "\
                "and vendor with vendor_id=#{vendor_id} already exists")
   end
 end

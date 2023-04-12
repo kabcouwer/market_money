@@ -90,14 +90,14 @@ RSpec.describe "MarketVendors API" do
         post "/api/v0/market_vendors",  headers: @headers,
                                         params:  JSON.generate(market_vendor: @market_vendor_params)
 
-        expect(response.status).to eq(400)
+        expect(response.status).to eq(422)
 
         body = JSON.parse(response.body, symbolize_names: true)
         error = body[:errors].first
 
-        expect(error[:status]).to eq("BAD REQUEST")
-        expect(error[:detail]).to eq("Validation Failed: Market vendor asociation between market with market_id=#{@market.id} and vendor with vendor_id=#{@vendor.id} already exists")
-        expect(error[:code]).to eq(400)
+        expect(error[:status]).to eq("UNPROCESSABLE ENTITY")
+        expect(error[:detail]).to eq("Validation Failed: Market vendor association between market with market_id=#{@market.id} and vendor with vendor_id=#{@vendor.id} already exists")
+        expect(error[:code]).to eq(422)
       end
     end
 
